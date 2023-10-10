@@ -45,11 +45,38 @@
   margin-bottom: 20px;
 }
 
+/* ... (rest of your CSS) */
+
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(6, 1fr); /* This will create a grid with 6 columns */
   gap: 16px;
   padding: 20px;
+}
+
+/* Default to 2 columns for small devices */
+.grid-container {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* 3 columns for medium devices (e.g., tablets) */
+@media (min-width: 600px) {
+  .grid-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* 4 columns for large devices (e.g., small laptops) */
+@media (min-width: 900px) {
+  .grid-container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* 6 columns for extra large devices (e.g., large laptops, desktops) */
+@media (min-width: 1200px) {
+  .grid-container {
+    grid-template-columns: repeat(6, 1fr);
+  }
 }
 
 .pokemon-item {
