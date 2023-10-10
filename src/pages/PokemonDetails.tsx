@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { capitalizeFirstLetter } from '../utils/utils';
 
 interface PokemonData {
     name: string;
@@ -31,7 +32,7 @@ function PokemonDetails() {
         borderRadius: '10px', 
         backgroundColor: 'rgba(255, 255, 255, 0.1)'  /* Slightly transparent background */
       }}>
-        <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>{pokemonDetails.name}</h2>
+        <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>{capitalizeFirstLetter(pokemonDetails.name)}</h2>
         <img src={pokemonDetails.sprites.front_default} alt={pokemonDetails.name} style={{ width: '100%', borderRadius: '50%', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }} />
       </div>
     </div>
