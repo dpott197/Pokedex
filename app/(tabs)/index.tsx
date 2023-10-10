@@ -41,12 +41,15 @@ export default function TabOneScreen() {
               source={{ uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item.entry_number}.png` }}
               style={styles.pokemonImage}
             />
-            <Text>{item.pokemon_species.name}</Text>
+            <Text>{capitalizeFirstLetter(item.pokemon_species.name)}</Text>
           </View>
         )}
       />
     </View>
   );
+}
+function capitalizeFirstLetter(string: string): string {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 const styles = StyleSheet.create({
