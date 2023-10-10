@@ -15,27 +15,6 @@ function App() {
   const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (listRef.current) {
-        const { scrollTop, scrollHeight, clientHeight } = listRef.current;
-        if (scrollTop + clientHeight >= scrollHeight) {
-          setCurrentPage(prev => prev + 1);
-        }
-      }
-    };
-
-    if (listRef.current) {
-      listRef.current.addEventListener('scroll', handleScroll);
-    }
-
-    return () => {
-      if (listRef.current) {
-        listRef.current.removeEventListener('scroll', handleScroll);
-      }
-    };
-  }, [listRef.current]);
-
-  useEffect(() => {
     // Reset the list when the search term changes
     setPokemonList([]);
     setCurrentPage(1);
@@ -50,6 +29,8 @@ function App() {
       });
   }, [currentPage, searchTerm]);
 
+  // ... (rest of the imports and states)
+
   return (
     <div className="App">
       <header className="App-header">
@@ -60,15 +41,18 @@ function App() {
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
         />
-        <div className="scrollable-list" ref={listRef}>
-          <ul>
+          <div className="grid-container">
             {pokemonList.map(pokemon => (
-              <li key={pokemon.name}>
-                {pokemon.name}
-              </li>
+              <div key={pokemon.name} className="pokemon-item">
+                <img
+                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.url.split('/')[6]}.png`}
+                  alt={pokemon.name}
+                  className="pokemon-image"
+                />
+                <span>{pokemon.name}</span>
+              </div>
             ))}
-          </ul>
-        </div>
+          </div>
       </header>
     </div>
   );

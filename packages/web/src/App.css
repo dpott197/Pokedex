@@ -44,3 +44,24 @@
   padding: 10px;
   margin-bottom: 20px;
 }
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* This will create a grid with 6 columns */
+  gap: 16px;
+  padding: 20px;
+}
+
+.pokemon-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.pokemon-image {
+  width: 100px;
+  height: 100px;
+}
