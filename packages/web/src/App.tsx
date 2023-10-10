@@ -6,11 +6,15 @@ interface Pokemon {
   url: string;
 }
 
+function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 function App() {
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
-  const itemsPerPage = 150;
+  const itemsPerPage = 1008;
 
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -49,7 +53,7 @@ function App() {
                   alt={pokemon.name}
                   className="pokemon-image"
                 />
-                <span>{pokemon.name}</span>
+                <span>{capitalizeFirstLetter(pokemon.name)}</span>
               </div>
             ))}
           </div>
