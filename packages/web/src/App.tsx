@@ -10,11 +10,14 @@ function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+// Source: https://www.pokemon.com/us/pokedex
+const TOTAL_POKEMON = 1010
+
 function App() {
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
-  const itemsPerPage = 1008;
+  const itemsPerPage = TOTAL_POKEMON;
 
   const listRef = useRef<HTMLDivElement>(null);
 
