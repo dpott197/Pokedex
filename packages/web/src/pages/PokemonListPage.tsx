@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import './App.css';
-import { Pokemon } from './interface/Pokemon';
-import { capitalizeFirstLetter } from './utils';
+import './../assets/styles/App.css';
+import { Pokemon } from './../interface/Pokemon';
+import { capitalizeFirstLetter } from './../utils/utils';
 
 // Source: https://www.pokemon.com/us/pokedex
 const TOTAL_POKEMON = 1010
