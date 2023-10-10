@@ -35,22 +35,22 @@ function PokemonList() {
         <h1>Pokémon List</h1>
         <input
           type="text"
-          placeholder="Search Pokémon..."
+          placeholder="🔍 Search Pokémon..."
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
         />
-          <div className="grid-container">
-            {pokemonList.map(pokemon => (
-              <div key={pokemon.name} className="pokemon-item">
-                <img
-                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.url.split('/')[6]}.png`}
-                  alt={pokemon.name}
-                  className="pokemon-image"
-                />
-                <span>{capitalizeFirstLetter(pokemon.name)}</span>
-              </div>
-            ))}
-          </div>
+        <div className="grid-container">
+          {pokemonList.map(pokemon => (
+            <div key={pokemon.name} className="pokemon-item">
+              <img
+                src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.url.split('/')[6]}.png`}
+                alt={pokemon.name}
+                className="pokemon-image"
+              />
+              <span>{capitalizeFirstLetter(pokemon.name)}</span>
+            </div>
+          ))}
+        </div>
       </header>
     </div>
   );
