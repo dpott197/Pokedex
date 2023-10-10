@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import './../assets/styles/App.css';
+import './../App.css';
 import { Pokemon } from './../interface/Pokemon';
 import { capitalizeFirstLetter } from './../utils/utils';
 
