@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+.scrollable-list {
+  height: 300px; /* Adjust this value based on your preference */
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+}
