@@ -1,10 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-
-// Define the state type
-interface Pokemon {
-  name: string;
-  url: string;
-}
+import { Pokemon } from '../interface/Pokemon';
 
 interface PokemonState {
   list: Pokemon[];
@@ -18,8 +13,8 @@ interface FetchPokemonsPayload {
   offset: number;
 }
 
-export const fetchPokemons = createAsyncThunk<Pokemon[], FetchPokemonsPayload>(
-  'pokemon/fetchPokemons',
+export const fetchPokemonList = createAsyncThunk<Pokemon[], FetchPokemonsPayload>(
+  'pokemon/fetchPokemonList',
   async (payload) => {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=${payload.limit}&offset=${payload.offset}`);
     const data = await response.json();
@@ -43,14 +38,14 @@ const pokemonSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchPokemons.pending, (state) => {
+      .addCase(fetchPokemonList.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(fetchPokemons.fulfilled, (state, action: PayloadAction<Pokemon[]>) => {
+      .addCase(fetchPokemonList.fulfilled, (state, action: PayloadAction<Pokemon[]>) => {
         state.status = 'succeeded';
         state.list = [...state.list, ...action.payload];
       })
-      .addCase(fetchPokemons.rejected, (state) => {
+      .addCase(fetchPokemonList.rejected, (state) => {
         state.status = 'failed';
       });
   },

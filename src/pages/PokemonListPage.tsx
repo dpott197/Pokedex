@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import './../App.css';
 import { Pokemon } from '../interface/Pokemon';
 import { capitalizeFirstLetter } from '../utils/utils';
+import { Link } from 'react-router-dom';
 
 // Source: https://www.pokemon.com/us/pokedex
 const TOTAL_POKEMON = 1010
@@ -39,9 +40,10 @@ function PokemonList() {
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
         />
-        <div className="grid-container">
-          {pokemonList.map(pokemon => (
-            <div key={pokemon.name} className="pokemon-item">
+      <div className="grid-container">
+        {pokemonList.map(pokemon => (
+          <Link to={`/pokemon/${pokemon.url.split('/')[6]}`} key={pokemon.url.split('/')[6]}>
+            <div className="pokemon-item">
               <img
                 src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.url.split('/')[6]}.png`}
                 alt={pokemon.name}
@@ -49,8 +51,9 @@ function PokemonList() {
               />
               <span>{capitalizeFirstLetter(pokemon.name)}</span>
             </div>
-          ))}
-        </div>
+          </Link>
+        ))}
+      </div>
       </header>
     </div>
   );
