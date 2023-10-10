@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, FlatList, Image } from 'react-native';
+import { StyleSheet, FlatList, Image, TextInput } from 'react-native';
 
 import { Text, View } from '../../components/Themed';
 
 export default function TabOneScreen() {
   const [pokemonList, setPokemonList] = useState([]);
+  const [searchQuery, setSearchQuery] = useState(''); // New state for search query
 
   useEffect(() => {
     // Fetch the list of Pokémon from the API
@@ -18,10 +19,21 @@ export default function TabOneScreen() {
       });
   }, []);
 
+  // Filter the Pokémon list based on the search query
+  const filteredPokemonList = pokemonList.filter(pokemon => 
+    pokemon.pokemon_species.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <View style={styles.container}>
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Search Pokémon"
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+      />
       <FlatList
-        data={pokemonList}
+        data={filteredPokemonList}
         keyExtractor={(item) => item.entry_number.toString()}
         renderItem={({ item }) => (
           <View style={styles.pokemonItem}>
@@ -43,14 +55,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+  searchInput: {
+    width: '90%',
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    marginBottom: 10,
   },
   pokemonItem: {
     flexDirection: 'row',
