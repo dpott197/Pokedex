@@ -21,7 +21,6 @@ function PokemonMaster() {
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       dispatch(setSearchTerm(localSearchTerm)); // Update the Redux state when Enter is pressed
-      fetchPokemonList({ limit: 1010, offset: 0 })
     }
   };
 
@@ -53,7 +52,7 @@ function PokemonMaster() {
         <div className="search-history">
           <h3>Recent Searches:</h3>
           <ul>
-            {searchHistory.map((term, index) => (
+            {[...searchHistory].reverse().map((term, index) => (
               <li key={index}>{term}</li>
             ))}
           </ul>
