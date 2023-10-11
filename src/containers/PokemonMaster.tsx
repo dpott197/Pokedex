@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchPokemonList, setSearchTerm } from '../redux/slices/pokemonSlice';
 import { AppDispatch, RootState } from '../redux/store';
 
-function ReduxPokemonMaster() {
+function PokemonMaster() {
   const [localSearchTerm, setLocalSearchTerm] = useState(''); // Local state for the search input
   const dispatch = useDispatch<AppDispatch>();
   const pokemonList = useSelector((state: RootState) => state.pokemon.list);
@@ -47,8 +47,8 @@ function ReduxPokemonMaster() {
           type="text"
           placeholder="🔍 Search Pokémon..."
           value={localSearchTerm}
-          onChange={e => setLocalSearchTerm(e.target.value)} // Update the local state on every change
-          onKeyPress={handleKeyPress} // Check for "Enter" key press
+          onChange={e => setLocalSearchTerm(e.target.value)}
+          onKeyPress={handleKeyPress}
         />
         <div className="search-history">
           <h3>Recent Searches:</h3>
@@ -60,18 +60,22 @@ function ReduxPokemonMaster() {
         </div>
         <div className="grid-container">
           {status === 'loading' && <p>Loading...</p>}
-          {status === 'succeeded' && uniquePokemonList.filter(pokemon => pokemon.name.includes(searchTerm.toLowerCase())).map(pokemon => (
-            <Link to={`/pokemon/${pokemon.url.split('/')[6]}`} key={pokemon.url.split('/')[6]}>
-              <div className="pokemon-item">
-                <img
-                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.url.split('/')[6]}.png`}
-                  alt={pokemon.name}
-                  className="pokemon-image"
-                />
-                <span>{capitalizeFirstLetter(pokemon.name)}</span>
-              </div>
-            </Link>
-          ))}
+          {status === 'succeeded' && uniquePokemonList.filter(pokemon => pokemon.name.includes(searchTerm.toLowerCase())).map(pokemon => {
+            const pokemonId = pokemon.url.split('/')[6]; // Extracting the Pokémon ID from the URL
+            return (
+              <Link to={`/pokemon/${pokemonId}`} key={pokemonId}>
+                <div className="pokemon-item">
+                  <img
+                    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png`}
+                    alt={pokemon.name}
+                    className="pokemon-image"
+                  />
+                  <span>#{pokemonId}</span>
+                  <span>{capitalizeFirstLetter(pokemon.name)}</span>
+                </div>
+              </Link>
+            );
+          })}
           {status === 'failed' && <p>Error fetching data</p>}
         </div>
       </header>
@@ -79,4 +83,4 @@ function ReduxPokemonMaster() {
   );
 }
 
-export default ReduxPokemonMaster;
+export default PokemonMaster;

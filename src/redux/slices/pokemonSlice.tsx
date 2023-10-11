@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { Pokemon } from '../../interfaces/Pokemon';
+import { getLocalStorageItem, setLocalStorageItem } from '../../utils/localStorage';
 
 interface PokemonState {
   list: Pokemon[];
@@ -27,7 +28,7 @@ const initialState: PokemonState = {
   list: [],
   status: 'idle',
   searchTerm: '',
-  searchHistory: [], // Add this line
+  searchHistory: getLocalStorageItem('searchHistory') || []
 };
 
 const pokemonSlice = createSlice({
@@ -38,6 +39,8 @@ const pokemonSlice = createSlice({
       state.searchTerm = action.payload;
       if (!state.searchHistory.includes(action.payload)) {
         state.searchHistory.push(action.payload);
+        // Save the searchHistory to localStorage
+        setLocalStorageItem('searchHistory', state.searchHistory);
       }
     },
   },
