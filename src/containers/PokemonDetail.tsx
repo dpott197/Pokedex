@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { capitalizeFirstLetter, getTypeColor } from '../utils/utils';
+import { capitalizeFirstLetter } from '../utils/capitalizeFirstLetter';
+import { getTypeColor } from '../utils/getTypeColor';
 
 interface PokemonData {
     name: string;

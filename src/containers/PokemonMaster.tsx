@@ -1,50 +1,43 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react'; // Import useState
 import './../App.css';
-import { Pokemon } from '../interface/Pokemon';
-import { capitalizeFirstLetter } from '../utils/utils';
+import { capitalizeFirstLetter } from '../utils/capitalizeFirstLetter';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPokemonList, setSearchTerm } from '../redux/slices/pokemonSlice';
+import { AppDispatch, RootState } from '../redux/store';
 
-const TOTAL_POKEMON = 1010;
-
-function PokemonMaster() {
-  const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [recentSearches, setRecentSearches] = useState<string[]>([]);
-  const itemsPerPage = TOTAL_POKEMON;
-
-  useEffect(() => {
-    setPokemonList([]);
-    setCurrentPage(1);
-  }, [searchTerm]);
+function ReduxPokemonMaster() {
+  const [localSearchTerm, setLocalSearchTerm] = useState(''); // Local state for the search input
+  const dispatch = useDispatch<AppDispatch>();
+  const pokemonList = useSelector((state: RootState) => state.pokemon.list);
+  const status = useSelector((state: RootState) => state.pokemon.status);
+  const searchTerm = useSelector((state: RootState) => state.pokemon.searchTerm);
+  const searchHistory = useSelector((state: RootState) => state.pokemon.searchHistory);
 
   useEffect(() => {
-    fetch(`https://pokeapi.co/api/v2/pokemon?limit=${itemsPerPage}&offset=${(currentPage - 1) * itemsPerPage}`)
-      .then(response => response.json())
-      .then(data => {
-        const filteredPokemon = data.results.filter((pokemon: Pokemon) => pokemon.name.includes(searchTerm.toLowerCase()));
-        setPokemonList(prev => [...prev, ...filteredPokemon]);
-      });
-  }, [currentPage, searchTerm]);
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-    if (value) {
-      setRecentSearches(prev => [value, ...prev].slice(0, 5)); // Store up to the last 5 searches
-    }
-  };
-
-  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-  };
+    dispatch(fetchPokemonList({ limit: 1010, offset: 0 }));
+  }, [dispatch]);
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && searchTerm) {
-      setRecentSearches(prev => [searchTerm, ...prev].slice(0, 5)); // Store up to the last 5 searches
+    if (e.key === 'Enter') {
+      dispatch(setSearchTerm(localSearchTerm)); // Update the Redux state when Enter is pressed
+      fetchPokemonList({ limit: 1010, offset: 0 })
     }
   };
+
+  const getUniquePokemon = (list: typeof pokemonList) => {
+    const uniqueNames = new Set();
+    return list.filter(pokemon => {
+      const name = pokemon.name.toLowerCase();
+      if (uniqueNames.has(name)) {
+        return false;
+      }
+      uniqueNames.add(name);
+      return true;
+    });
+  };
+
+  const uniquePokemonList = getUniquePokemon(pokemonList);
 
   return (
     <div className="App">
@@ -53,20 +46,21 @@ function PokemonMaster() {
         <input
           type="text"
           placeholder="🔍 Search Pokémon..."
-          value={searchTerm}
-          onChange={handleSearchInput}
-          onKeyPress={handleKeyPress}
+          value={localSearchTerm}
+          onChange={e => setLocalSearchTerm(e.target.value)} // Update the local state on every change
+          onKeyPress={handleKeyPress} // Check for "Enter" key press
         />
-        <div className="recent-searches">
+        <div className="search-history">
           <h3>Recent Searches:</h3>
           <ul>
-            {recentSearches.map((search, index) => (
-              <li key={index}>{search}</li>
+            {searchHistory.map((term, index) => (
+              <li key={index}>{term}</li>
             ))}
           </ul>
         </div>
         <div className="grid-container">
-          {pokemonList.map(pokemon => (
+          {status === 'loading' && <p>Loading...</p>}
+          {status === 'succeeded' && uniquePokemonList.filter(pokemon => pokemon.name.includes(searchTerm.toLowerCase())).map(pokemon => (
             <Link to={`/pokemon/${pokemon.url.split('/')[6]}`} key={pokemon.url.split('/')[6]}>
               <div className="pokemon-item">
                 <img
@@ -78,10 +72,11 @@ function PokemonMaster() {
               </div>
             </Link>
           ))}
+          {status === 'failed' && <p>Error fetching data</p>}
         </div>
       </header>
     </div>
   );
 }
 
-export default PokemonMaster;
+export default ReduxPokemonMaster;

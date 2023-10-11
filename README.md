@@ -5,7 +5,7 @@
 Please attempt to implement the following business requirements:
 
 - [x] Use the Pokemon API to make API requests for data https://pokeapi.co/docs/v2.
-- [ ] Able to search for any Pokemon.
+- [x] Able to search for any Pokemon.
 - [ ] Able to see a history of what has been searched and revisit at anytime.
 
 **Technical Requirements**
