@@ -3,7 +3,7 @@ import './../App.css';
 import { capitalizeFirstLetter } from '../utils/utils';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPokemonList, setSearchTerm } from './../redux/slices/pokemonSlice';
+import { fetchPokemonList, setSearchTerm } from '../redux/slices/pokemonSlice';
 import { AppDispatch, RootState } from '../redux/store';
 
 function PokemonList() {

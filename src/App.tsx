@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import PokemonList from './pages/PokemonListPage'
-import PokemonDetails from './pages/PokemonDetails'; // This will be our new component
+import PokemonList from './containers/PokemonListPage'
+import PokemonDetails from './containers/PokemonDetails'; // This will be our new component
 
 function App() {
   return (
