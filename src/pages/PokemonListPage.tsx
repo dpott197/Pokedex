@@ -1,34 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import './../App.css';
-import { Pokemon } from '../interface/Pokemon';
 import { capitalizeFirstLetter } from '../utils/utils';
 import { Link } from 'react-router-dom';
-
-// Source: https://www.pokemon.com/us/pokedex
-const TOTAL_POKEMON = 1010
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchPokemonList, setSearchTerm } from './../redux/slices/pokemonSlice'; // Import the actions and selectors
+import { AppDispatch, RootState } from '../redux/store';
 
 function PokemonList() {
-  const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState('');
-  const itemsPerPage = TOTAL_POKEMON;
+  const dispatch = useDispatch<AppDispatch>();
+  const pokemonList = useSelector((state: RootState) => state.pokemon.list);
+  const status = useSelector((state: RootState) => state.pokemon.status);
+  const searchTerm = useSelector((state: RootState) => state.pokemon.searchTerm);
 
   useEffect(() => {
-    // Reset the list when the search term changes
-    setPokemonList([]);
-    setCurrentPage(1);
-  }, [searchTerm]);
-
-  useEffect(() => {
-    fetch(`https://pokeapi.co/api/v2/pokemon?limit=${itemsPerPage}&offset=${(currentPage - 1) * itemsPerPage}`)
-      .then(response => response.json())
-      .then(data => {
-        const filteredPokemon = data.results.filter((pokemon: Pokemon) => pokemon.name.includes(searchTerm.toLowerCase()));
-        setPokemonList(prev => [...prev, ...filteredPokemon]);
-      });
-  }, [currentPage, searchTerm]);
-
-  // ... (rest of the imports and states)
+    // Fetch the list when the component mounts
+    dispatch(fetchPokemonList({ limit: 1010, offset: 0 }));
+  }, [dispatch]);
 
   return (
     <div className="App">
@@ -38,10 +25,11 @@ function PokemonList() {
           type="text"
           placeholder="🔍 Search Pokémon..."
           value={searchTerm}
-          onChange={e => setSearchTerm(e.target.value)}
+          onChange={e => dispatch(setSearchTerm(e.target.value))}
         />
       <div className="grid-container">
-        {pokemonList.map(pokemon => (
+        {status === 'loading' && <p>Loading...</p>}
+        {status === 'succeeded' && pokemonList.filter(pokemon => pokemon.name.includes(searchTerm.toLowerCase())).map(pokemon => (
           <Link to={`/pokemon/${pokemon.url.split('/')[6]}`} key={pokemon.url.split('/')[6]}>
             <div className="pokemon-item">
               <img
@@ -53,6 +41,7 @@ function PokemonList() {
             </div>
           </Link>
         ))}
+        {status === 'failed' && <p>Error fetching data</p>}
       </div>
       </header>
     </div>
