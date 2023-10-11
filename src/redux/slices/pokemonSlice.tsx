@@ -5,6 +5,7 @@ interface PokemonState {
   list: Pokemon[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   searchTerm: string;
+  searchHistory: string[]; // Add this line
 }
 
 // Define the action payload types
@@ -26,6 +27,7 @@ const initialState: PokemonState = {
   list: [],
   status: 'idle',
   searchTerm: '',
+  searchHistory: [], // Add this line
 };
 
 const pokemonSlice = createSlice({
@@ -34,6 +36,9 @@ const pokemonSlice = createSlice({
   reducers: {
     setSearchTerm: (state, action: PayloadAction<string>) => {
       state.searchTerm = action.payload;
+      if (!state.searchHistory.includes(action.payload)) {
+        state.searchHistory.push(action.payload);
+      }
     },
   },
   extraReducers: (builder) => {

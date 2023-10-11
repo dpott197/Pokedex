@@ -1,13 +1,15 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import PokemonList from './pages/PokemonListPage'
-import PokemonDetails from './pages/PokemonDetails'; // This will be our new component
+import PokemonDetail from './containers/PokemonDetail';
+import PokemonMaster from './containers/PokemonMaster';
+import ReduxPokemonMaster from './containers/ReduxPokemonMaster';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<PokemonList />} />
-        <Route path="/pokemon/:id" element={<PokemonDetails />} />
+        <Route path="/" element={<PokemonMaster />} />
+        <Route path="/redux" element={<ReduxPokemonMaster />} />
+        <Route path="/pokemon/:id" element={<PokemonDetail />} />
       </Routes>
     </Router>
   );

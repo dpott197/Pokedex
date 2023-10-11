@@ -10,7 +10,7 @@ interface PokemonData {
     };
 }
 
-function PokemonDetails() {
+function PokemonDetail() {
   const { id } = useParams<{ id: string }>();
   const [pokemonDetails, setPokemonDetails] = useState<PokemonData | null>(null);
 
@@ -46,4 +46,4 @@ function PokemonDetails() {
   );
 }
 
-export default PokemonDetails;
+export default PokemonDetail;
